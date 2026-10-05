@@ -1,0 +1,927 @@
+/*
+  ❌ ERRO 1: você declarou 'Ubuntu' na variável --font-family, mas nenhum arquivo de fonte
+     era carregado. Funciona na sua máquina só se a Ubuntu estiver instalada nela;
+     para qualquer outra pessoa cai em sans-serif.
+  ✅ CORRIGIDO: @font-face para os 3 pesos, apontando para os arquivos de assets/fonts.
+     font-display: swap mostra o texto com a fonte reserva enquanto a Ubuntu carrega.
+*/
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('./assets/fonts/Ubuntu-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('./assets/fonts/Ubuntu-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('./assets/fonts/Ubuntu-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Primary Colors */
+  --marine-blue: hsl(213, 96%, 18%);
+  --purplish-blue: hsl(243, 100%, 62%);
+  --pastel-blue: hsl(228, 100%, 84%);
+  --light-blue: hsl(206, 94%, 87%);
+  --strawberry-red: hsl(354, 84%, 57%); /* Para mensagens de erro */
+
+  /* Neutral Colors */
+  --cool-gray: hsl(231, 11%, 63%);
+  --light-gray: hsl(229, 24%, 87%);
+  --magnolia: hsl(217, 100%, 97%);
+  --alabaster: hsl(231, 100%, 99%);
+  --white: hsl(0, 0%, 100%);
+
+  /* Typography */
+  --font-family: 'Ubuntu', sans-serif;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-bold: 700;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--magnolia);
+  color: var(--marine-blue);
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+  /* Configuração para mobile: os elementos empilham (coluna) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* NOVO: espaço para a barra de botões fixa no rodapé do mobile */
+  padding-bottom: 5.5rem;
+}
+
+input, button {
+  font-family: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/*
+  ❌ ERRO 2 (meu, não seu): o CSS que você escreveu assume que a .sidebar fica FORA do .card
+     (banner de largura total, e o cartão sobe por cima com margem negativa). Isso está certo
+     para o mobile, mas o index.html que eu te mandei colocava a sidebar DENTRO do .card.
+  ✅ CORRIGIDO: no HTML agora existe um wrapper <div class="app"> contendo
+     <aside class="sidebar"> e <main class="card">.
+     Este .app só cuida do layout: no mobile ele empilha, e no desktop (próxima etapa,
+     media query) vira o cartão branco com a sidebar à esquerda.
+*/
+.app {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar {
+  background-image: url('./assets/images/bg-sidebar-mobile.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 172px; /* Altura suficiente para mostrar a curva da imagem */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 2rem;
+}
+
+.step-list {
+  display: flex;
+  gap: 1rem;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-weight: var(--font-bold);
+  transition: all 0.3s ease;
+}
+
+/* NOVO: no mobile só os círculos aparecem; o texto "STEP 1 / YOUR INFO" volta no desktop */
+.step-content {
+  display: none;
+}
+
+.step.active .step-number {
+  background-color: var(--light-blue);
+  color: var(--marine-blue);
+  border-color: var(--light-blue);
+}
+
+.card {
+  background-color: var(--white);
+  width: calc(100% - 32px);
+  max-width: 450px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  margin-top: -72px;
+  position: relative;
+  z-index: 10;
+}
+
+/*
+  ❌ ERRO 3: a indentação desta regra estava deslocada ("  .step-header {" com 2 espaços,
+     e o "}" sem). Não quebra nada, mas some a legibilidade e denuncia que o arquivo não
+     foi formatado. Use Shift+Alt+F no VS Code.
+  ✅ CORRIGIDO.
+*/
+.step-header {
+  margin-bottom: 1.25rem;
+}
+
+.step-title-main {
+  font-size: 1.5rem;
+  font-weight: var(--font-bold);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.step-description {
+  color: var(--cool-gray);
+  font-size: 1rem;
+}
+
+/* =========================================================
+   FORMULÁRIO E ETAPAS — mobile primeiro
+   Medidas tiradas dos JPGs do design (mobile 375px / desktop 1440px)
+   ========================================================= */
+
+.form-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-step.hidden {
+  display: none !important;
+}
+
+/* ---------- Etapa 1: campos ---------- */
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label-row label {
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+/* Escondido por padrão; o JS adiciona .error no .input-group */
+.error-msg {
+  display: none;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  font-weight: var(--font-bold);
+  color: var(--strawberry-red);
+}
+
+.input-group.error .error-msg {
+  display: block;
+}
+
+.input-group input[type="text"],
+.input-group input[type="email"],
+.input-group input[type="tel"] {
+  width: 100%;
+  height: 40px;
+  padding: 0 1rem;
+  border: 1px solid var(--light-gray);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: var(--font-medium);
+  color: var(--marine-blue);
+  background-color: var(--white);
+  transition: border-color 0.2s ease;
+}
+
+.input-group input::placeholder {
+  color: var(--cool-gray);
+  font-weight: var(--font-medium);
+}
+
+.input-group input:hover,
+.input-group input:focus {
+  outline: none;
+  border-color: var(--purplish-blue);
+}
+
+.input-group.error input {
+  border-color: var(--strawberry-red);
+}
+
+/* ---------- Etapa 2: planos e toggle ---------- */
+.plan-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.plan-card {
+  position: relative;
+  display: block;
+  padding: 1rem;
+  border: 1px solid var(--light-gray);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* O rádio fica escondido (mas continua focável e acessível) */
+.plan-card input,
+.addon-card input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.plan-card:hover {
+  border-color: var(--purplish-blue);
+}
+
+.plan-card:has(input:checked) {
+  border-color: var(--purplish-blue);
+  background-color: var(--alabaster);
+}
+
+.plan-card:has(input:focus-visible) {
+  outline: 2px solid var(--purplish-blue);
+  outline-offset: 2px;
+}
+
+.plan-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.plan-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.plan-name,
+.plan-price,
+.plan-promo {
+  display: block;
+}
+
+.plan-name {
+  font-size: 1rem;
+  font-weight: var(--font-medium);
+}
+
+.plan-price {
+  font-size: 0.875rem;
+  color: var(--cool-gray);
+}
+
+.plan-promo {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.billing-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  height: 48px;
+  margin-top: 1.5rem;
+  background-color: var(--alabaster);
+  border-radius: 8px;
+}
+
+.toggle-label {
+  font-size: 0.875rem;
+  font-weight: var(--font-medium);
+  color: var(--cool-gray);
+  transition: color 0.2s ease;
+}
+
+.toggle-label.active {
+  color: var(--marine-blue);
+}
+
+.switch {
+  position: relative;
+  display: block;
+  width: 38px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background-color: var(--marine-blue);
+  border-radius: 10px;
+  transition: background-color 0.2s ease;
+}
+
+/* A bolinha branca */
+.slider::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  background-color: var(--white);
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(18px);
+}
+
+.switch input:hover + .slider {
+  background-color: var(--purplish-blue);
+}
+
+.switch input:focus-visible + .slider {
+  outline: 2px solid var(--purplish-blue);
+  outline-offset: 2px;
+}
+
+/* ---------- Etapa 3: add-ons ---------- */
+.addons-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.addon-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--light-gray);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.addon-card:hover {
+  border-color: var(--purplish-blue);
+}
+
+.addon-card:has(input:checked) {
+  border-color: var(--purplish-blue);
+  background-color: var(--alabaster);
+}
+
+.addon-card:has(input:focus-visible) {
+  outline: 2px solid var(--purplish-blue);
+  outline-offset: 2px;
+}
+
+.checkbox-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.custom-checkbox {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--light-gray);
+  border-radius: 4px;
+  background-color: var(--white);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.addon-card input:checked + .custom-checkbox {
+  background-color: var(--purplish-blue);
+  border-color: var(--purplish-blue);
+}
+
+/* O "check" é desenhado com CSS: um L girado em 45° */
+.addon-card input:checked + .custom-checkbox::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--white);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.addon-details {
+  flex: 1;
+}
+
+.addon-name,
+.addon-description {
+  display: block;
+}
+
+.addon-name {
+  font-size: 0.875rem;
+  font-weight: var(--font-medium);
+}
+
+.addon-description {
+  font-size: 0.75rem;
+  color: var(--cool-gray);
+}
+
+.addon-price {
+  font-size: 0.75rem;
+  color: var(--purplish-blue);
+}
+
+/* ---------- Etapa 4: resumo ---------- */
+.summary-box {
+  padding: 1rem;
+  background-color: var(--alabaster);
+  border-radius: 8px;
+}
+
+.summary-plan-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-plan-name,
+.btn-change-plan {
+  display: block;
+}
+
+.summary-plan-name {
+  font-size: 0.875rem;
+  font-weight: var(--font-medium);
+}
+
+.summary-plan-price {
+  font-size: 0.875rem;
+  font-weight: var(--font-bold);
+}
+
+.btn-change-plan {
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 0.875rem;
+  color: var(--cool-gray);
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.btn-change-plan:hover {
+  color: var(--purplish-blue);
+}
+
+.btn-change-plan:focus-visible {
+  outline: 2px solid var(--purplish-blue);
+  outline-offset: 2px;
+}
+
+.summary-divider {
+  height: 0;
+  margin: 0.75rem 0;
+  border: none;
+  border-top: 1px solid var(--light-gray);
+}
+
+.summary-addons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.summary-addon-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.summary-addon-name {
+  color: var(--cool-gray);
+}
+
+.summary-addon-price {
+  color: var(--marine-blue);
+}
+
+.summary-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.25rem;
+  padding: 0 1rem;
+}
+
+.summary-total-label {
+  font-size: 0.875rem;
+  color: var(--cool-gray);
+}
+
+.summary-total-price {
+  font-size: 1rem;
+  font-weight: var(--font-bold);
+  color: var(--purplish-blue);
+}
+
+/* ---------- Etapa 5: agradecimento ---------- */
+.success-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.success-icon {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 1.5rem;
+}
+
+.success-title {
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.success-description {
+  color: var(--cool-gray);
+}
+
+/* ---------- Rodapé com botões ----------
+   Mobile: barra branca fixa no fundo da tela (72px de altura).
+   Desktop: volta ao fluxo normal (media query abaixo). */
+.form-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--white);
+  z-index: 20;
+}
+
+/* Etapa 1 não tem "Go Back": o Next Step vai para a direita sozinho */
+.btn-next:only-child {
+  margin-left: auto;
+}
+
+.btn-next,
+.btn-confirm {
+  height: 40px;
+  padding: 0 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: var(--font-medium);
+  color: var(--white);
+  background-color: var(--marine-blue);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-next:hover {
+  background-color: hsl(213, 71%, 32%);
+}
+
+.btn-confirm {
+  background-color: var(--purplish-blue);
+}
+
+.btn-confirm:hover {
+  background-color: hsl(243, 100%, 78%);
+}
+
+.btn-back {
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 0.875rem;
+  font-weight: var(--font-medium);
+  color: var(--cool-gray);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.btn-back:hover {
+  color: var(--marine-blue);
+}
+
+.btn-next:focus-visible,
+.btn-back:focus-visible,
+.btn-confirm:focus-visible {
+  outline: 2px solid var(--purplish-blue);
+  outline-offset: 3px;
+}
+
+.attribution {
+  margin-top: 1rem;
+}
+
+/* =========================================================
+   DESKTOP (a partir de 900px)
+   O .app vira o cartão branco 940×600; a sidebar fica dentro dele
+   ========================================================= */
+@media (min-width: 900px) {
+  body {
+    justify-content: center;
+    padding-bottom: 0;
+  }
+
+  .app {
+    flex-direction: row;
+    align-items: stretch;
+    width: 940px;
+    height: 600px;
+    padding: 1rem;
+    background-color: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 25px 40px -20px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar {
+    width: 274px;
+    height: 100%;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background-image: url('./assets/images/bg-sidebar-desktop.svg');
+    background-position: bottom;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 2.5rem 2rem;
+  }
+
+  .step-list {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .step-content {
+    display: block;
+  }
+
+  .step-subtitle {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--pastel-blue);
+    line-height: 1.2;
+  }
+
+  .step-title {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--white);
+  }
+
+  /* O .card interno perde fundo, sombra e a margem negativa do mobile */
+  .card {
+    flex: 1;
+    width: auto;
+    max-width: none;
+    margin-top: 0;
+    padding: 3.5rem 100px 0 100px;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .step-title-main {
+    font-size: 2rem;
+  }
+
+  .step-header {
+    margin-bottom: 2.375rem;
+  }
+
+  /* Etapa 1 */
+  .form-fields {
+    gap: 1.5rem;
+  }
+
+  .input-group {
+    gap: 0.5rem;
+  }
+
+  .label-row label,
+  .error-msg {
+    font-size: 0.875rem;
+  }
+
+  .input-group input[type="text"],
+  .input-group input[type="email"],
+  .input-group input[type="tel"] {
+    height: 48px;
+  }
+
+  /* Etapa 2: 3 cartões lado a lado (138px cada, 18px de espaço) */
+  .plan-options {
+    flex-direction: row;
+    gap: 1.125rem;
+  }
+
+  .plan-card {
+    flex: 1;
+    padding: 1.25rem 1rem 1rem;
+  }
+
+  .plan-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2.5rem;
+  }
+
+  .billing-toggle {
+    margin-top: 2rem;
+  }
+
+  /* Etapa 3 */
+  .addons-options {
+    gap: 1rem;
+  }
+
+  .addon-card {
+    height: 80px;
+    padding: 0 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .addon-name {
+    font-size: 1rem;
+  }
+
+  .addon-description,
+  .addon-price {
+    font-size: 0.875rem;
+  }
+
+  /* Etapa 4 */
+  .summary-box {
+    padding: 1rem 1.5rem 1.4rem;
+  }
+
+  .summary-plan-name,
+  .summary-plan-price {
+    font-size: 1rem;
+  }
+
+  .summary-divider {
+    margin: 1.4rem 0 1rem;
+  }
+
+  .summary-addons-list {
+    gap: 0.9rem;
+  }
+
+  .summary-total-row {
+    padding: 0 1.5rem;
+  }
+
+  .summary-total-price {
+    font-size: 1.25rem;
+  }
+
+  /* Etapa 5 */
+  .success-container {
+    padding: 0 0 1.5rem;
+  }
+
+  .success-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 2rem;
+  }
+
+  .success-title {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+  }
+
+  /* Rodapé volta ao fluxo normal e vai para o canto inferior do cartão */
+  .form-footer {
+    position: static;
+    margin-top: auto;
+    padding: 0 0 1rem 0;
+    background: none;
+  }
+
+  .btn-next,
+  .btn-confirm {
+    height: 48px;
+    padding: 0 1.5rem;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+
+  .btn-back {
+    font-size: 1rem;
+  }
+
+  .attribution {
+    position: fixed;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    margin-top: 0;
+  }
+}

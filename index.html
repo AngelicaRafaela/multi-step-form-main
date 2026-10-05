@@ -1,126 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
-
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
-  
-  <title>Frontend Mentor | Multi-step form</title>
-
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 0.6875rem; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
-</head>
-<body>
-
-  <!-- Sidebar start -->
-
-  Step 1
-  Your info
-
-  Step 2
-  Select plan
-
-  Step 3
-  Add-ons
-
-  Step 4
-  Summary
-
-  <!-- Sidebar end -->
-
-  <!-- Step 1 start -->
-
-  Personal info
-  Please provide your name, email address, and phone number.
-
-  Name
-  e.g. Stephen King
-
-  Email Address
-  e.g. stephenking@lorem.com
-
-  Phone Number
-  e.g. +1 234 567 890
-
-  Next Step
-
-  <!-- Step 1 end -->
-
-  <!-- Step 2 start -->
-
-  Select your plan
-  You have the option of monthly or yearly billing.
-
-  Arcade
-  $9/mo
-
-  Advanced
-  $12/mo
-
-  Pro
-  $15/mo
-
-  Monthly
-  Yearly
-
-  Go Back
-  Next Step
-
-  <!-- Step 2 end -->
-
-  <!-- Step 3 start -->
-
-  Pick add-ons
-  Add-ons help enhance your gaming experience.
-
-  Online service
-  Access to multiplayer games
-  +$1/mo
-
-  Larger storage
-  Extra 1TB of cloud save
-  +$2/mo
-
-  Customizable Profile
-  Custom theme on your profile
-  +$2/mo
-
-  Go Back
-  Next Step
-
-  <!-- Step 3 end -->
-
-  <!-- Step 4 start -->
-
-  Finishing up
-  Double-check everything looks OK before confirming.
-
-  <!-- Dynamically add subscription and add-on selections here -->
-
-  Total (per month/year)
-
-  Go Back
-  Confirm
-
-  <!-- Step 4 end -->
-
-  <!-- Step 5 start -->
-
-  Thank you!
-
-  Thanks for confirming your subscription! We hope you have fun 
-  using our platform. If you ever need support, please feel free 
-  to email us at support@loremgaming.com.
-
-  <!-- Step 5 end -->
-  
-  <footer class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </footer>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png"/>
+		<!--
+      ❌ ERRO 1: faltava ligar o seu CSS à página.
+      ✅ CORRIGIDO: <link> para o style.css (crie o arquivo na mesma pasta do index.html).
+    -->
+		<link rel="stylesheet" href="./style.css"/>
+		<title>Frontend Mentor | Multi-step form</title>
+		<!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+		<style>
+      .attribution { font-size: 0.6875rem; text-align: center; }
+      .attribution a { color: hsl(228, 45%, 44%); }
+    </style>
+	</head>
+	<body>
+		<!--
+      ❌ ERRO 2: não havia um título principal (h1) na página. Leitores de tela e SEO
+         esperam um. Os h2 das etapas existem, mas "ficam sem pai".
+      ✅ CORRIGIDO: h1 com a classe "sr-only" (visualmente oculto, mas lido por leitores de tela).
+         No CSS você precisa criar a classe .sr-only. Pesquise "visually hidden css".
+    -->
+		<h1 class="sr-only">Multi-step subscription form</h1>
+		<!--
+      ❌ ERRO 3: sidebar e etapas estavam soltas direto no body, sem um contêiner de layout.
+         (Na 1ª versão que te mandei, eu usei <main class="card"> aqui, o que estava errado:
+         seu CSS espera a sidebar FORA do .card.)
+      ✅ CORRIGIDO: <div class="app"> envolve a sidebar e o <main class="card"> do formulário.
+         Mobile: banner no topo e cartão por cima. Desktop: .app vira o cartão branco.
+    -->
+		<div class="app">
+			<!-- Sidebar start -->
+			<aside class="sidebar">
+				<ul class="step-list">
+					<!--
+            ❌ ERRO 4: a classe estava escrita "acitve" (letras trocadas) e estava nos 4 itens.
+               O CSS e o JS vão procurar ".active", e só o passo 1 começa ativo.
+            ❌ ERRO 5: "sept-subtitle" também tinha erro de digitação.
+            ✅ CORRIGIDO: "active" só no primeiro item e "step-subtitle" nos quatro.
+          -->
+					<li class="step active">
+						<div class="step-number">1</div>
+						<div class="step-content">
+							<span class="step-subtitle">Step 1</span>
+							<strong class="step-title">Your info</strong>
+						</div>
+					</li>
+					<li class="step">
+						<div class="step-number">2</div>
+						<div class="step-content">
+							<span class="step-subtitle">Step 2</span>
+							<strong class="step-title">Select plan</strong>
+						</div>
+					</li>
+					<li class="step">
+						<div class="step-number">3</div>
+						<div class="step-content">
+							<span class="step-subtitle">Step 3</span>
+							<strong class="step-title">Add-ons</strong>
+						</div>
+					</li>
+					<li class="step">
+						<div class="step-number">4</div>
+						<div class="step-content">
+							<span class="step-subtitle">Step 4</span>
+							<strong class="step-title">Summary</strong>
+						</div>
+					</li>
+				</ul>
+			</aside>
+			<!-- Sidebar end -->
+			<main class="card">
+				<!--
+        ❌ ERRO 6: os campos não estavam dentro de um <form>.
+        ✅ CORRIGIDO: <form> envolvendo as etapas.
+           "novalidate" desliga as bolhas de erro nativas do navegador, porque o desafio
+           pede mensagens de erro próprias (usando os <span class="error-msg">).
+           Os "required" e type="email" continuam úteis: você os consulta no JS
+           (ex.: input.validity) e para acessibilidade.
+      -->
+				<form class="form-container" id="signup-form" novalidate>
+				<!-- Step 1 start -->
+				<section class="form-step step-1 active" data-step="1">
+					<header class="step-header">
+						<h2 class="step-title-main">Personal info</h2>
+						<p class="step-description">Please provide your name, email address, and phone number.</p>
+					</header>
+					<div class="form-fields">
+						<!-- Name Field -->
+						<div class="input-group">
+							<div class="label-row">
+								<label for="name">Name</label>
+								<span class="error-msg" aria-live="polite">This field is required</span>
+							</div>
+							<input type="text" id="name" name="name" placeholder="e.g. Stephen King" required/>
+						</div>
+						<!-- Email Field -->
+						<div class="input-group">
+							<div class="label-row">
+								<label for="email">Email Address</label>
+								<span class="error-msg" aria-live="polite">This field is required</span>
+							</div>
+							<input type="email" id="email" name="email" placeholder="e.g. stephenking@lorem.com" required/>
+						</div>
+						<!-- Phone Field -->
+						<div class="input-group">
+							<div class="label-row">
+								<label for="phone">Phone Number</label>
+								<span class="error-msg" aria-live="polite">This field is required</span>
+							</div>
+							<input type="tel" id="phone" name="phone" placeholder="e.g. +1 234 567 890" required/>
+						</div>
+					</div>
+					<!-- Footer Navigation -->
+					<footer class="form-footer">
+						<button type="button" class="btn-next" id="btn-next-1">Next Step</button>
+					</footer>
+				</section>
+				<!-- Step 1 end -->
+				<!-- Step 2 start -->
+				<section class="form-step step-2 hidden" data-step="2">
+					<header class="step-header">
+						<h2 class="step-title-main">Select your plan</h2>
+						<p class="step-description">You have the option of monthly or yearly billing.</p>
+					</header>
+					<!-- Plan Cards -->
+					<div class="plan-options">
+						<!--
+              ❌ ERRO 7: alt="Arcade Icon" (e nos outros planos). O nome do plano já está escrito
+                 ao lado, então o leitor de tela leria "Arcade Icon Arcade", repetido.
+                 O ícone é decorativo.
+              ✅ CORRIGIDO: alt="" (vazio) + aria-hidden. Vale para os 3 planos.
+            -->
+						<!-- Arcade -->
+						<label class="plan-card" for="arcade">
+							<input type="radio" name="plan" id="arcade" value="arcade" checked/>
+							<div class="plan-content">
+								<img src="./assets/images/icon-arcade.svg" alt="" aria-hidden="true" class="plan-icon"/>
+								<div class="plan-details">
+									<strong class="plan-name">Arcade</strong>
+									<span class="plan-price" data-monthly="$9/mo" data-yearly="$90/yr">$9/mo</span>
+									<span class="plan-promo hidden">2 months free</span>
+								</div>
+							</div>
+						</label>
+						<!-- Advanced -->
+						<label class="plan-card" for="advanced">
+							<input type="radio" name="plan" id="advanced" value="advanced"/>
+							<div class="plan-content">
+								<img src="./assets/images/icon-advanced.svg" alt="" aria-hidden="true" class="plan-icon"/>
+								<div class="plan-details">
+									<strong class="plan-name">Advanced</strong>
+									<span class="plan-price" data-monthly="$12/mo" data-yearly="$120/yr">$12/mo</span>
+									<span class="plan-promo hidden">2 months free</span>
+								</div>
+							</div>
+						</label>
+						<!-- Pro -->
+						<label class="plan-card" for="pro">
+							<input type="radio" name="plan" id="pro" value="pro"/>
+							<div class="plan-content">
+								<img src="./assets/images/icon-pro.svg" alt="" aria-hidden="true" class="plan-icon"/>
+								<div class="plan-details">
+									<strong class="plan-name">Pro</strong>
+									<span class="plan-price" data-monthly="$15/mo" data-yearly="$150/yr">$15/mo</span>
+									<span class="plan-promo hidden">2 months free</span>
+								</div>
+							</div>
+						</label>
+					</div>
+					<!-- Billing Toggle -->
+					<div class="billing-toggle">
+						<span class="toggle-label monthly active">Monthly</span>
+						<label class="switch" for="billing-frequency">
+							<!--
+                ❌ ERRO 8: o checkbox do toggle não tinha nome acessível. O label só envolvia
+                   o slider, que é visual. Um leitor de tela anunciaria só "checkbox".
+                ✅ CORRIGIDO: aria-label descrevendo o que ele faz.
+              -->
+							<input type="checkbox" id="billing-frequency" name="billing-frequency" value="yearly" aria-label="Switch to yearly billing"/>
+							<!--
+                ❌ ERRO 9: <span ... /> não fecha em HTML. A barra "/" só funciona em tags
+                   void (input, img, br, hr...). O navegador "perdoa", mas o HTML é inválido
+                   e o span engole o conteúdo seguinte em alguns casos.
+                ✅ CORRIGIDO: <span class="slider"></span>
+              -->
+							<span class="slider"></span>
+						</label>
+						<span class="toggle-label yearly">Yearly</span>
+					</div>
+					<!-- Footer Navigation -->
+					<footer class="form-footer">
+						<button type="button" class="btn-back" id="btn-back-2">Go Back</button>
+						<button type="button" class="btn-next" id="btn-next-2">Next Step</button>
+					</footer>
+				</section>
+				<!-- Step 2 end -->
+				<!-- Step 3 start -->
+				<section class="form-step step-3 hidden" data-step="3">
+					<header class="step-header">
+						<h2 class="step-title-main">Pick add-ons</h2>
+						<p class="step-description">Add-ons help enhance your gaming experience.</p>
+					</header>
+					<div class="addons-options">
+						<!-- Online service -->
+						<label class="addon-card" for="online-service">
+							<div class="checkbox-wrapper">
+								<input type="checkbox" name="addons" id="online-service" value="online-service"/>
+								<!-- ❌ ERRO 9 (de novo): span auto-fechado. ✅ Corrigido nos 3 add-ons. -->
+								<span class="custom-checkbox"></span>
+							</div>
+							<div class="addon-details">
+								<strong class="addon-name">Online service</strong>
+								<span class="addon-description">Access to multiplayer games</span>
+							</div>
+							<span class="addon-price" data-monthly="+$1/mo" data-yearly="+$10/yr">+$1/mo</span>
+						</label>
+						<!-- Larger storage -->
+						<label class="addon-card" for="larger-storage">
+							<div class="checkbox-wrapper">
+								<input type="checkbox" name="addons" id="larger-storage" value="larger-storage"/>
+								<span class="custom-checkbox"></span>
+							</div>
+							<div class="addon-details">
+								<strong class="addon-name">Larger storage</strong>
+								<span class="addon-description">Extra 1TB of cloud save</span>
+							</div>
+							<span class="addon-price" data-monthly="+$2/mo" data-yearly="+$20/yr">+$2/mo</span>
+						</label>
+						<!-- Customizable Profile -->
+						<label class="addon-card" for="customizable-profile">
+							<div class="checkbox-wrapper">
+								<input type="checkbox" name="addons" id="customizable-profile" value="customizable-profile"/>
+								<span class="custom-checkbox"></span>
+							</div>
+							<div class="addon-details">
+								<strong class="addon-name">Customizable Profile</strong>
+								<span class="addon-description">Custom theme on your profile</span>
+							</div>
+							<span class="addon-price" data-monthly="+$2/mo" data-yearly="+$20/yr">+$2/mo</span>
+						</label>
+					</div>
+					<!-- Footer Navigation -->
+					<footer class="form-footer">
+						<button type="button" class="btn-back" id="btn-back-3">Go Back</button>
+						<button type="button" class="btn-next" id="btn-next-3">Next Step</button>
+					</footer>
+				</section>
+				<!-- Step 3 end -->
+				<!-- Step 4 start -->
+				<section class="form-step step-4 hidden" data-step="4">
+					<header class="step-header">
+						<h2 class="step-title-main">Finishing up</h2>
+						<p class="step-description">Double-check everything looks OK before confirming.</p>
+					</header>
+					<!-- Summary Section -->
+					<div class="summary-box">
+						<!-- Selected Plan -->
+						<div class="summary-plan-row">
+							<div class="summary-plan-info">
+								<strong class="summary-plan-name" id="summary-plan-name">Arcade (Monthly)</strong>
+								<button type="button" class="btn-change-plan" id="btn-change">Change</button>
+							</div>
+							<strong class="summary-plan-price" id="summary-plan-price">$9/mo</strong>
+						</div>
+						<hr class="summary-divider"/>
+						<!-- Os add-ons escolhidos serão inseridos aqui pelo JS -->
+						<ul class="summary-addons-list" id="summary-addons-list">
+							<!-- Exemplo da estrutura de cada item, para você usar de referência no CSS -->
+							<!--
+              <li class="summary-addon-item">
+                <span class="summary-addon-name">Online service</span>
+                <span class="summary-addon-price">+$1/mo</span>
+              </li>
+              -->
+						</ul>
+					</div>
+					<!-- Total Calculation -->
+					<div class="summary-total-row">
+						<span class="summary-total-label">Total (per <span id="summary-total-period">month</span>)</span>
+						<strong class="summary-total-price" id="summary-total-price">+$9/mo</strong>
+					</div>
+					<!-- Footer Navigation -->
+					<footer class="form-footer">
+						<button type="button" class="btn-back" id="btn-back-4">Go Back</button>
+						<button type="button" class="btn-confirm" id="btn-confirm">Confirm</button>
+					</footer>
+				</section>
+				<!-- Step 4 end -->
+				<!-- Step 5 start -->
+				<section class="form-step step-5 hidden" data-step="5">
+					<div class="success-container">
+						<img src="./assets/images/icon-thank-you.svg" alt="" aria-hidden="true" class="success-icon"/>
+						<h2 class="success-title">Thank you!</h2>
+						<p class="success-description">
+              Thanks for confirming your subscription! We hope you have fun
+              using our platform. If you ever need support, please feel free
+              to email us at support@loremgaming.com.
+            </p>
+					</div>
+				</section>
+				<!-- Step 5 end -->
+			</form>
+		</main>
+	</div>
+	<!--
+      ⚠️ LEMBRETE (não é erro): troque "Seu Nome" e o link "seu-perfil" pelos seus dados antes de publicar.
+    -->
+	<footer class="attribution">
+      Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank" rel="noopener">Frontend Mentor</a>.
+      Coded by <a href="https://github.com/seu-perfil" target="_blank" rel="noopener">Seu Nome</a>.
+    </footer>
+	<script src="./script.js"></script>
 </body>
 </html>
