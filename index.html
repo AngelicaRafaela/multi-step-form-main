@@ -4,10 +4,6 @@
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png"/>
-		<!--
-      ❌ ERRO 1: faltava ligar o seu CSS à página.
-      ✅ CORRIGIDO: <link> para o style.css (crie o arquivo na mesma pasta do index.html).
-    -->
 		<link rel="stylesheet" href="./style.css"/>
 		<title>Frontend Mentor | Multi-step form</title>
 		<!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
@@ -17,30 +13,11 @@
     </style>
 	</head>
 	<body>
-		<!--
-      ❌ ERRO 2: não havia um título principal (h1) na página. Leitores de tela e SEO
-         esperam um. Os h2 das etapas existem, mas "ficam sem pai".
-      ✅ CORRIGIDO: h1 com a classe "sr-only" (visualmente oculto, mas lido por leitores de tela).
-         No CSS você precisa criar a classe .sr-only. Pesquise "visually hidden css".
-    -->
 		<h1 class="sr-only">Multi-step subscription form</h1>
-		<!--
-      ❌ ERRO 3: sidebar e etapas estavam soltas direto no body, sem um contêiner de layout.
-         (Na 1ª versão que te mandei, eu usei <main class="card"> aqui, o que estava errado:
-         seu CSS espera a sidebar FORA do .card.)
-      ✅ CORRIGIDO: <div class="app"> envolve a sidebar e o <main class="card"> do formulário.
-         Mobile: banner no topo e cartão por cima. Desktop: .app vira o cartão branco.
-    -->
 		<div class="app">
 			<!-- Sidebar start -->
 			<aside class="sidebar">
 				<ul class="step-list">
-					<!--
-            ❌ ERRO 4: a classe estava escrita "acitve" (letras trocadas) e estava nos 4 itens.
-               O CSS e o JS vão procurar ".active", e só o passo 1 começa ativo.
-            ❌ ERRO 5: "sept-subtitle" também tinha erro de digitação.
-            ✅ CORRIGIDO: "active" só no primeiro item e "step-subtitle" nos quatro.
-          -->
 					<li class="step active">
 						<div class="step-number">1</div>
 						<div class="step-content">
@@ -73,14 +50,6 @@
 			</aside>
 			<!-- Sidebar end -->
 			<main class="card">
-				<!--
-        ❌ ERRO 6: os campos não estavam dentro de um <form>.
-        ✅ CORRIGIDO: <form> envolvendo as etapas.
-           "novalidate" desliga as bolhas de erro nativas do navegador, porque o desafio
-           pede mensagens de erro próprias (usando os <span class="error-msg">).
-           Os "required" e type="email" continuam úteis: você os consulta no JS
-           (ex.: input.validity) e para acessibilidade.
-      -->
 				<form class="form-container" id="signup-form" novalidate>
 				<!-- Step 1 start -->
 				<section class="form-step step-1 active" data-step="1">
@@ -128,12 +97,6 @@
 					</header>
 					<!-- Plan Cards -->
 					<div class="plan-options">
-						<!--
-              ❌ ERRO 7: alt="Arcade Icon" (e nos outros planos). O nome do plano já está escrito
-                 ao lado, então o leitor de tela leria "Arcade Icon Arcade", repetido.
-                 O ícone é decorativo.
-              ✅ CORRIGIDO: alt="" (vazio) + aria-hidden. Vale para os 3 planos.
-            -->
 						<!-- Arcade -->
 						<label class="plan-card" for="arcade">
 							<input type="radio" name="plan" id="arcade" value="arcade" checked/>
@@ -175,18 +138,7 @@
 					<div class="billing-toggle">
 						<span class="toggle-label monthly active">Monthly</span>
 						<label class="switch" for="billing-frequency">
-							<!--
-                ❌ ERRO 8: o checkbox do toggle não tinha nome acessível. O label só envolvia
-                   o slider, que é visual. Um leitor de tela anunciaria só "checkbox".
-                ✅ CORRIGIDO: aria-label descrevendo o que ele faz.
-              -->
 							<input type="checkbox" id="billing-frequency" name="billing-frequency" value="yearly" aria-label="Switch to yearly billing"/>
-							<!--
-                ❌ ERRO 9: <span ... /> não fecha em HTML. A barra "/" só funciona em tags
-                   void (input, img, br, hr...). O navegador "perdoa", mas o HTML é inválido
-                   e o span engole o conteúdo seguinte em alguns casos.
-                ✅ CORRIGIDO: <span class="slider"></span>
-              -->
 							<span class="slider"></span>
 						</label>
 						<span class="toggle-label yearly">Yearly</span>
@@ -209,7 +161,6 @@
 						<label class="addon-card" for="online-service">
 							<div class="checkbox-wrapper">
 								<input type="checkbox" name="addons" id="online-service" value="online-service"/>
-								<!-- ❌ ERRO 9 (de novo): span auto-fechado. ✅ Corrigido nos 3 add-ons. -->
 								<span class="custom-checkbox"></span>
 							</div>
 							<div class="addon-details">
@@ -267,9 +218,7 @@
 							<strong class="summary-plan-price" id="summary-plan-price">$9/mo</strong>
 						</div>
 						<hr class="summary-divider"/>
-						<!-- Os add-ons escolhidos serão inseridos aqui pelo JS -->
 						<ul class="summary-addons-list" id="summary-addons-list">
-							<!-- Exemplo da estrutura de cada item, para você usar de referência no CSS -->
 							<!--
               <li class="summary-addon-item">
                 <span class="summary-addon-name">Online service</span>
@@ -306,10 +255,7 @@
 			</form>
 		</main>
 	</div>
-	<!--
-      ⚠️ LEMBRETE (não é erro): troque "Seu Nome" e o link "seu-perfil" pelos seus dados antes de publicar.
-    -->
-	<footer class="attribution">
+	<footer class="attribution"><!-- TODO: troque "Seu Nome" e o link do GitHub pelos seus dados -->
       Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank" rel="noopener">Frontend Mentor</a>.
       Coded by <a href="https://github.com/seu-perfil" target="_blank" rel="noopener">Seu Nome</a>.
     </footer>

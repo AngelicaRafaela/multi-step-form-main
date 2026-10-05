@@ -29,32 +29,40 @@ function updateUI() {
   // Exibe o passo atual
   document.querySelector(`.step-${currentStep}`).classList.remove('hidden');
 
-  // Atualiza o indicador da sidebar (só vai até o passo 4)
-  if (currentStep <= 4) {
-    sidebarIndicators[currentStep - 1].classList.add('active');
-  }
+  // Atualiza o indicador da sidebar (na etapa 5 o círculo 4 continua ativo)
+  const activeIndicator = sidebarIndicators[Math.min(currentStep, 4) - 1];
+  activeIndicator.classList.add('active');
+  sidebarIndicators.forEach(indicator => indicator.removeAttribute('aria-current'));
+  activeIndicator.setAttribute('aria-current', 'step');
 }
 
 function validateStep1() {
   let isValid = true;
-  
+
   const showError = (input, message) => {
     const group = input.closest('.input-group');
     group.classList.add('error');
     group.querySelector('.error-msg').innerText = message;
+    input.setAttribute('aria-invalid', 'true');
     isValid = false;
   };
-  
+
   const clearError = (input) => {
     input.closest('.input-group').classList.remove('error');
+    input.removeAttribute('aria-invalid');
   };
-  
-  if (inputName.value.trim() === '') {
+
+  // Nome: obrigatório e com pelo menos 2 caracteres
+  const nameValue = inputName.value.trim();
+  if (nameValue === '') {
     showError(inputName, 'This field is required');
+  } else if (nameValue.length < 2) {
+    showError(inputName, 'Valid name required');
   } else {
     clearError(inputName);
   }
-  
+
+  // E-mail
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (inputEmail.value.trim() === '') {
     showError(inputEmail, 'This field is required');
@@ -63,21 +71,21 @@ function validateStep1() {
   } else {
     clearError(inputEmail);
   }
-  
- const phoneRegex = /^\+?[\d\s\-().]+$/;
-const phoneDigits = inputPhone.value.replace(/\D/g, '');
 
-if (inputPhone.value.trim() === '') {
-  showError(inputPhone, 'This field is required');
-} else if (
-  !phoneRegex.test(inputPhone.value.trim()) ||
-  phoneDigits.length < 7 ||
-  phoneDigits.length > 15
-) {
-  showError(inputPhone, 'Valid phone required');
-} else {
-  clearError(inputPhone);
-}
+  // Telefone: só dígitos, espaços, + - ( ) . e de 7 a 15 dígitos
+  const phoneRegex = /^\+?[\d\s\-().]+$/;
+  const phoneDigits = inputPhone.value.replace(/\D/g, '');
+  if (inputPhone.value.trim() === '') {
+    showError(inputPhone, 'This field is required');
+  } else if (
+    !phoneRegex.test(inputPhone.value.trim()) ||
+    phoneDigits.length < 7 ||
+    phoneDigits.length > 15
+  ) {
+    showError(inputPhone, 'Valid phone required');
+  } else {
+    clearError(inputPhone);
+  }
 
   return isValid;
 }
@@ -117,10 +125,10 @@ function updateSummary() {
   const planPriceString = isYearly 
     ? planCard.querySelector('.plan-price').dataset.yearly 
     : planCard.querySelector('.plan-price').dataset.monthly;
-	
-	const planPriceNumber = parseInt(planPriceString.replace(/\D/g, ''));
-	
-	document.getElementById('summary-plan-name').innerText = `${planName} (${periodText})`;
+  
+  const planPriceNumber = parseInt(planPriceString.replace(/\D/g, ''));
+  
+  document.getElementById('summary-plan-name').innerText = `${planName} (${periodText})`;
   document.getElementById('summary-plan-price').innerText = planPriceString;
   
   const summaryAddonsList = document.getElementById('summary-addons-list');
@@ -138,8 +146,8 @@ function updateSummary() {
 
     const addonPriceNumber = parseInt(addonPriceString.replace(/\D/g, ''));
     addonsTotalNumber += addonPriceNumber;
-	
-	const li = document.createElement('li');
+  
+  const li = document.createElement('li');
     li.classList.add('summary-addon-item');
     li.innerHTML = `
       <span class="summary-addon-name">${addonName}</span>
@@ -150,7 +158,7 @@ function updateSummary() {
   
   const total = planPriceNumber + addonsTotalNumber;
   document.getElementById('summary-total-period').innerText = isYearly ? 'year' : 'month';
-  document.getElementById('summary-total-price').innerText = `+$${total}/${periodAbbr}`;
+  document.getElementById('summary-total-price').innerText = `${isYearly ? '' : '+'}$${total}/${periodAbbr}`;
 }
 
 btnNextList.forEach(btn => {
@@ -158,8 +166,8 @@ btnNextList.forEach(btn => {
     if (currentStep === 1 && !validateStep1()) {
       return;
     }
-	
-	if (currentStep === 3) {
+  
+  if (currentStep === 3) {
       updateSummary();
     }
 
@@ -190,5 +198,6 @@ btnConfirm.addEventListener('click', (e) => {
 [inputName, inputEmail, inputPhone].forEach(input => {
   input.addEventListener('input', () => {
     input.closest('.input-group').classList.remove('error');
+    input.removeAttribute('aria-invalid');
   });
 });

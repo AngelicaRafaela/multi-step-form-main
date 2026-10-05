@@ -1,10 +1,4 @@
-/*
-  ❌ ERRO 1: você declarou 'Ubuntu' na variável --font-family, mas nenhum arquivo de fonte
-     era carregado. Funciona na sua máquina só se a Ubuntu estiver instalada nela;
-     para qualquer outra pessoa cai em sans-serif.
-  ✅ CORRIGIDO: @font-face para os 3 pesos, apontando para os arquivos de assets/fonts.
-     font-display: swap mostra o texto com a fonte reserva enquanto a Ubuntu carrega.
-*/
+
 @font-face {
   font-family: 'Ubuntu';
   src: url('./assets/fonts/Ubuntu-Regular.ttf') format('truetype');
@@ -35,7 +29,7 @@
   --purplish-blue: hsl(243, 100%, 62%);
   --pastel-blue: hsl(228, 100%, 84%);
   --light-blue: hsl(206, 94%, 87%);
-  --strawberry-red: hsl(354, 84%, 57%); /* Para mensagens de erro */
+  --strawberry-red: hsl(354, 84%, 57%);
 
   /* Neutral Colors */
   --cool-gray: hsl(231, 11%, 63%);
@@ -64,11 +58,9 @@ body {
   font-size: 16px;
   line-height: 1.5;
   min-height: 100vh;
-  /* Configuração para mobile: os elementos empilham (coluna) */
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* NOVO: espaço para a barra de botões fixa no rodapé do mobile */
   padding-bottom: 5.5rem;
 }
 
@@ -96,15 +88,6 @@ ul {
   border-width: 0;
 }
 
-/*
-  ❌ ERRO 2 (meu, não seu): o CSS que você escreveu assume que a .sidebar fica FORA do .card
-     (banner de largura total, e o cartão sobe por cima com margem negativa). Isso está certo
-     para o mobile, mas o index.html que eu te mandei colocava a sidebar DENTRO do .card.
-  ✅ CORRIGIDO: no HTML agora existe um wrapper <div class="app"> contendo
-     <aside class="sidebar"> e <main class="card">.
-     Este .app só cuida do layout: no mobile ele empilha, e no desktop (próxima etapa,
-     media query) vira o cartão branco com a sidebar à esquerda.
-*/
 .app {
   width: 100%;
   display: flex;
@@ -118,7 +101,7 @@ ul {
   background-position: center;
   background-repeat: no-repeat;
   width: 100%;
-  height: 172px; /* Altura suficiente para mostrar a curva da imagem */
+  height: 172px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -143,7 +126,6 @@ ul {
   transition: all 0.3s ease;
 }
 
-/* NOVO: no mobile só os círculos aparecem; o texto "STEP 1 / YOUR INFO" volta no desktop */
 .step-content {
   display: none;
 }
@@ -168,12 +150,6 @@ ul {
   z-index: 10;
 }
 
-/*
-  ❌ ERRO 3: a indentação desta regra estava deslocada ("  .step-header {" com 2 espaços,
-     e o "}" sem). Não quebra nada, mas some a legibilidade e denuncia que o arquivo não
-     foi formatado. Use Shift+Alt+F no VS Code.
-  ✅ CORRIGIDO.
-*/
 .step-header {
   margin-bottom: 1.25rem;
 }
@@ -189,11 +165,6 @@ ul {
   color: var(--cool-gray);
   font-size: 1rem;
 }
-
-/* =========================================================
-   FORMULÁRIO E ETAPAS — mobile primeiro
-   Medidas tiradas dos JPGs do design (mobile 375px / desktop 1440px)
-   ========================================================= */
 
 .form-container {
   flex: 1;
@@ -211,7 +182,6 @@ ul {
   display: none !important;
 }
 
-/* ---------- Etapa 1: campos ---------- */
 .form-fields {
   display: flex;
   flex-direction: column;
@@ -235,7 +205,6 @@ ul {
   line-height: 1.2;
 }
 
-/* Escondido por padrão; o JS adiciona .error no .input-group */
 .error-msg {
   display: none;
   font-size: 0.75rem;
@@ -278,7 +247,6 @@ ul {
   border-color: var(--strawberry-red);
 }
 
-/* ---------- Etapa 2: planos e toggle ---------- */
 .plan-options {
   display: flex;
   flex-direction: column;
@@ -295,7 +263,6 @@ ul {
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-/* O rádio fica escondido (mas continua focável e acessível) */
 .plan-card input,
 .addon-card input {
   position: absolute;
@@ -425,7 +392,6 @@ ul {
   outline-offset: 2px;
 }
 
-/* ---------- Etapa 3: add-ons ---------- */
 .addons-options {
   display: flex;
   flex-direction: column;
@@ -478,7 +444,6 @@ ul {
   border-color: var(--purplish-blue);
 }
 
-/* O "check" é desenhado com CSS: um L girado em 45° */
 .addon-card input:checked + .custom-checkbox::after {
   content: '';
   position: absolute;
@@ -515,7 +480,6 @@ ul {
   color: var(--purplish-blue);
 }
 
-/* ---------- Etapa 4: resumo ---------- */
 .summary-box {
   padding: 1rem;
   background-color: var(--alabaster);
@@ -609,7 +573,6 @@ ul {
   color: var(--purplish-blue);
 }
 
-/* ---------- Etapa 5: agradecimento ---------- */
 .success-container {
   flex: 1;
   display: flex;
@@ -636,9 +599,6 @@ ul {
   color: var(--cool-gray);
 }
 
-/* ---------- Rodapé com botões ----------
-   Mobile: barra branca fixa no fundo da tela (72px de altura).
-   Desktop: volta ao fluxo normal (media query abaixo). */
 .form-footer {
   position: fixed;
   bottom: 0;
@@ -652,7 +612,6 @@ ul {
   z-index: 20;
 }
 
-/* Etapa 1 não tem "Go Back": o Next Step vai para a direita sozinho */
 .btn-next:only-child {
   margin-left: auto;
 }
@@ -709,10 +668,6 @@ ul {
   margin-top: 1rem;
 }
 
-/* =========================================================
-   DESKTOP (a partir de 900px)
-   O .app vira o cartão branco 940×600; a sidebar fica dentro dele
-   ========================================================= */
 @media (min-width: 900px) {
   body {
     justify-content: center;
@@ -774,7 +729,6 @@ ul {
     color: var(--white);
   }
 
-  /* O .card interno perde fundo, sombra e a margem negativa do mobile */
   .card {
     flex: 1;
     width: auto;
@@ -814,7 +768,6 @@ ul {
     height: 48px;
   }
 
-  /* Etapa 2: 3 cartões lado a lado (138px cada, 18px de espaço) */
   .plan-options {
     flex-direction: row;
     gap: 1.125rem;
@@ -881,7 +834,6 @@ ul {
     font-size: 1.25rem;
   }
 
-  /* Etapa 5 */
   .success-container {
     padding: 0 0 1.5rem;
   }
@@ -897,7 +849,6 @@ ul {
     font-size: 2rem;
   }
 
-  /* Rodapé volta ao fluxo normal e vai para o canto inferior do cartão */
   .form-footer {
     position: static;
     margin-top: auto;
