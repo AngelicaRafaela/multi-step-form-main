@@ -64,11 +64,20 @@ function validateStep1() {
     clearError(inputEmail);
   }
   
-  if (inputPhone.value.trim() === '') {
-    showError(inputPhone, 'This field is required');
-  } else {
-    clearError(inputPhone);
-  }
+ const phoneRegex = /^\+?[\d\s\-().]+$/;
+const phoneDigits = inputPhone.value.replace(/\D/g, '');
+
+if (inputPhone.value.trim() === '') {
+  showError(inputPhone, 'This field is required');
+} else if (
+  !phoneRegex.test(inputPhone.value.trim()) ||
+  phoneDigits.length < 7 ||
+  phoneDigits.length > 15
+) {
+  showError(inputPhone, 'Valid phone required');
+} else {
+  clearError(inputPhone);
+}
 
   return isValid;
 }
